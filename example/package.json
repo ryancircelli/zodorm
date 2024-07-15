@@ -1,0 +1,15 @@
+{
+  "name": "zodorm-example",
+  "version": "1.0.0",
+  "scripts": {
+    "buildTypes": "zodorm generate",
+    "deployTerraform": "zodorm generate && cd ./terraform && terraform apply"
+  },
+  "dependencies": {
+    "zod": "^3.23.8",
+    "zodorm": "latest"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "name": "zodorm",
+  "author": {
+    "name": "Ryan Circelli",
+    "email": "ryancircelli@gmail.com"
+  },
+  "description": "ZodOrm is a powerful and flexible ORM solution for NoSQL databases, specifically designed to work seamlessly with TypeScript and Zod. It provides robust type generation, schema validation, and integration with infrastructure management tools like Terraform.",
+  "repository": "github:ryancircelli/zodorm",
+  "license": "ISC",
+  "keywords": [
+    "zod",
+    "orm",
+    "typescript",
+    "dynamodb",
+    "terraform",
+    "nossql"
+  ],
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsup ./src/**"
+  },
+  "bin": {
+    "zodorm": "./dist/index.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./generator": {
+      "types": "./dist/generator/index.d.ts",
+      "default": "./dist/generator/index.js"
+    },
+    "./generator/internal": {
+      "types": "./dist/generator/internal/index.d.ts",
+      "default": "./dist/generator/internal/index.js"
+    }
+  },
+  "dependencies": {
+    "chalk": "4.1.2",
+    "chokidar": "^3.6.0",
+    "commander": "^12.1.0",
+    "tsup": "^8.1.0",
+    "zod": "^3.22.4",
+    "zod-to-ts": "^1.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.5",
+    "typescript": "^5.5.3"
+  }
+}
