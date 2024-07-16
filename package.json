@@ -6,7 +6,7 @@
   },
   "description": "ZodOrm is a powerful and flexible ORM solution for NoSQL databases, specifically designed to work seamlessly with TypeScript and Zod. It provides robust type generation, schema validation, and integration with infrastructure management tools like Terraform.",
   "repository": "github:ryancircelli/zodorm",
-  "license": "ISC",
+  "license": "MIT",
   "keywords": [
     "zod",
     "orm",

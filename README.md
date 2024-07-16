@@ -1,5 +1,12 @@
 # ZodOrm
 
+<p align="center">
+<a href="https://github.com/ryancircelli/zodorm/actions"><img src="https://github.com/ryancircelli/zodorm/actions/workflows/npm-publish.yaml/badge.svg" alt="ZodOrm CI status" /></a>
+<a href="https://opensource.org/licenses/MIT" rel="nofollow"><img src="https://img.shields.io/github/license/ryancircelli/zodorm" alt="License"></a>
+<a href="https://www.npmjs.com/package/@ryancircelli/zodorm" rel="nofollow"><img src="https://img.shields.io/npm/dw/%40ryancircelli%2Fzodorm" alt="npm"></a>
+<a href="https://www.npmjs.com/package/@ryancircelli/zodorm" rel="nofollow"><img src="https://img.shields.io/github/stars/ryancircelli/zodorm" alt="stars"></a>
+</p>
+
 ZodOrm is a powerful and flexible ORM solution for NoSQL databases, specifically designed to work seamlessly with TypeScript and Zod. It provides robust type generation, schema validation, and integration with infrastructure management tools like Terraform.
 
 ## Features
