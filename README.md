@@ -48,3 +48,4 @@ Easily export your schemas for use with other tools and processes.
   - Export to own repo
   - Publish to npm
 - Usage Docs
+- Tests
