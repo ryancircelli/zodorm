@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "zod": "^3.23.8",
-    "zodorm": "latest"
+    "@ryancircelli/zodorm": "latest"
   },
   "devDependencies": {
     "typescript": "^5.4.5"

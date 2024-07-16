@@ -1,4 +1,4 @@
-import { exportTable, exportType } from "zodorm/generator";
+import { exportTable, exportType } from "@ryancircelli/zodorm/generator";
 
 import { z } from "zod";
 
