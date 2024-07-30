@@ -2,7 +2,7 @@
 
 import { Command } from "commander";
 import chokidar from "chokidar";
-import { generate } from "./generator/internal/generate";
+import { generate } from "./generator/internal/generate.js";
 
 const program = new Command();
 

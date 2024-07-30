@@ -1,5 +1,5 @@
-import { Table } from "./definition";
-import { createGsiName } from "./createGsiName";
+import type { Table } from "../index.js";
+import { createGsiName } from "./createGsiName.js";
 
 const getAWSType = (type: any): string => {
   switch (type.constructor.name) {
@@ -23,14 +23,14 @@ export const generateTerraform = (tables: { [name: string]: Table<any> }) => {
       hash_key: {
         name: table.tableConfig.key.primaryKey,
         type: getAWSType(
-          table.zodObject.shape[table.tableConfig.key.primaryKey],
+          table.zodObject.shape[table.tableConfig.key.primaryKey]
         ),
       },
       range_key: table.tableConfig.key.sortKey
         ? {
             name: table.tableConfig.key.sortKey,
             type: getAWSType(
-              table.zodObject.shape[table.tableConfig.key.sortKey],
+              table.zodObject.shape[table.tableConfig.key.sortKey]
             ),
           }
         : null,
@@ -39,7 +39,7 @@ export const generateTerraform = (tables: { [name: string]: Table<any> }) => {
           name: createGsiName(
             name,
             gsi.primaryKey as string,
-            gsi.sortKey as string,
+            gsi.sortKey as string
           ),
           hash_key: {
             name: gsi.primaryKey,

@@ -1,13 +1,13 @@
 import * as fs from "fs";
 
-import { CustomType, Table } from "./definition";
+import type { CustomType, Table } from "../index.js";
 import { ZodObject, z } from "zod";
 import { createTypeAlias, printNode, zodToTs } from "zod-to-ts";
 
 import { build } from "tsup";
 import chalk from "chalk";
-import { createGsiName } from "./createGsiName";
-import { generateTerraform } from "./generateTerraform";
+import { createGsiName } from "./createGsiName.js";
+import { generateTerraform } from "./generateTerraform.js";
 import path from "path";
 import { pathToFileURL } from "url";
 
@@ -27,41 +27,52 @@ const importTypeObjects = async () => {
     entry: { definitions: definitionsPath },
     outDir: distDir,
     format: ["esm"],
-    target: "esnext",
+    tsconfig: path.join(process.cwd(), "/tsconfig.json"),
     dts: true,
-    clean: true,
     external: ["esbuild"],
     splitting: false,
+    clean: true,
     silent: true,
   });
 
-  const compiledDefinitionsPath = path.join(distDir, "definitions.mjs");
+  const compiledDefinitionsPath = path.join(distDir, "definitions.js");
   const fileUrl = pathToFileURL(compiledDefinitionsPath).href;
   return import(fileUrl);
 };
+
+function instanceOfTable(object: any): object is Table<any> {
+  return object._discriminator === "ZodormTable";
+}
+function instanceOfCustomType(object: any): object is CustomType<any> {
+  return object._discriminator === "ZodormCustomType";
+}
 
 export const generate = async () => {
   const executionPath = process.cwd();
   const typeObjects = await importTypeObjects();
 
   let tableTypes = "";
-  let zodTypes = "import { convertToDB } from 'zodorm/generator/internal';\n";
+  let zodTypes =
+    "import { convertToDB } from '@ryancircelli/zodorm/generator/internal';\n";
   const tables: {
     [name: string]: Table<any>;
   } = {};
   for (const [name, _exportedObject] of Object.entries(typeObjects)) {
     let exportedObject: Table<any> | CustomType<any>;
-    if (_exportedObject instanceof Table) exportedObject = _exportedObject;
-    else if (_exportedObject instanceof CustomType)
+    if (instanceOfTable(_exportedObject)) exportedObject = _exportedObject;
+    else if (instanceOfCustomType(_exportedObject))
       exportedObject = _exportedObject;
-    else throw new Error("Expected Table or CustomType");
-
+    else {
+      console.log(_exportedObject, typeof _exportedObject);
+      throw new Error("Expected Table or CustomType");
+    }
     zodTypes += `import {${name} as _${name}} from './definitions';\n`;
     zodTypes += `export const ${name}Zod = _${name}.zodObject;\n`;
+    zodTypes += `export type ${name} = typeof ${name}Zod._type;\n`;
     zodTypes += `export const ${name}DBZod = convertToDB(_${name}.zodObject)[1];\n`;
-    zodTypes += `export type ${name} = typeof _${name}.zodObject._type;\n`;
+    zodTypes += `export type ${name}DB = typeof ${name}DBZod._type;\n`;
 
-    if (exportedObject instanceof Table) {
+    if (instanceOfTable(exportedObject)) {
       tables[name] = exportedObject;
       if ((exportedObject.tableConfig?.gsi?.length ?? 0) > 0) {
         let gsiNames = "export enum " + name + "Gsi {\n";

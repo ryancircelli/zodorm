@@ -15,10 +15,10 @@
     "terraform",
     "nossql"
   ],
-  "version": "1.0.3",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
-    "build": "tsup ./src/**"
+    "build": "tsc"
   },
   "bin": {
     "zodorm": "./dist/index.js"
@@ -37,6 +37,9 @@
       "default": "./dist/generator/internal/index.js"
     }
   },
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "chalk": "4.1.2",
     "chokidar": "^3.6.0",

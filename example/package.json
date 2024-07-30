@@ -1,6 +1,7 @@
 {
   "name": "zodorm-example",
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "buildTypes": "zodorm generate",
     "deployTerraform": "zodorm generate && cd ./terraform && terraform apply"
