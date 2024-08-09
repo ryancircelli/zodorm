@@ -14,7 +14,9 @@ const getAWSType = (type: any): string => {
   }
 };
 
-export const generateTerraform = (tables: { [name: string]: Table<any> }) => {
+export const generateTerraform = (tables: {
+  [name: string]: Table<any, any>;
+}) => {
   const terraformTypes: {
     [key: string]: any;
   } = {};

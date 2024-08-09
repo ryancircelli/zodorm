@@ -7,8 +7,9 @@
     "deployTerraform": "zodorm generate && cd ./terraform && terraform apply"
   },
   "dependencies": {
+    "@ryancircelli/zodorm": "latest",
     "zod": "^3.23.8",
-    "@ryancircelli/zodorm": "latest"
+    "zodorm-example": "file:"
   },
   "devDependencies": {
     "typescript": "^5.4.5"
