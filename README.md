@@ -31,7 +31,7 @@ Automatically generate TypeScript types from your schema definitions to ensure t
 
 Expose your table schemas as Zod schemas for validation and parsing.
 
-- Requires default values for missing fields. Useful for ZodObject parsing from an unreliable soruce (the NoSQL table)!
+- Requires default values for missing fields. Useful for ZodObject parsing from an unreliable source (the NoSQL table)!
 
 - **Table Zod Schema Exposure:** Use the Zod schemas directly in your application for runtime type validation and data parsing.
 

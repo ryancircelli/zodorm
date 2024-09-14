@@ -40,7 +40,7 @@ const importTypeObjects = async () => {
   return import(fileUrl);
 };
 
-function instanceOfTable(object: any): object is Table<any> {
+function instanceOfTable(object: any): object is Table<any, any> {
   return object._discriminator === "ZodormTable";
 }
 function instanceOfCustomType(object: any): object is CustomType<any> {
@@ -51,14 +51,20 @@ export const generate = async () => {
   const executionPath = process.cwd();
   const typeObjects = await importTypeObjects();
 
-  let tableTypes = "";
+  let tableTypes = "import * as ZodTypes from './zodTypes';\n";
+  let tableKeys: String[] = [];
+  let tableUpdateTypes: {
+    [key: string]: {
+      full: string;
+    };
+  } = {};
   let zodTypes =
     "import { convertToDB } from '@ryancircelli/zodorm/generator/internal';\n";
   const tables: {
-    [name: string]: Table<any>;
+    [name: string]: Table<any, any>;
   } = {};
   for (const [name, _exportedObject] of Object.entries(typeObjects)) {
-    let exportedObject: Table<any> | CustomType<any>;
+    let exportedObject: Table<any, any> | CustomType<any>;
     if (instanceOfTable(_exportedObject)) exportedObject = _exportedObject;
     else if (instanceOfCustomType(_exportedObject))
       exportedObject = _exportedObject;
@@ -74,6 +80,7 @@ export const generate = async () => {
 
     if (instanceOfTable(exportedObject)) {
       tables[name] = exportedObject;
+
       if ((exportedObject.tableConfig?.gsi?.length ?? 0) > 0) {
         let gsiNames = "export enum " + name + "Gsi {\n";
         exportedObject.tableConfig?.gsi?.forEach((gsi: any) => {
@@ -83,7 +90,6 @@ export const generate = async () => {
             gsi.sortKey as string
           );
           gsiNames += `  ${gsiName} = '${gsiName}',\n`;
-
           tableTypes +=
             printSchema(
               z.object({
@@ -93,6 +99,7 @@ export const generate = async () => {
               }),
               gsiName + "Key"
             ) + "\n";
+          tableKeys.push(gsiName + "Key");
         });
         gsiNames += "}\n";
         tableTypes += gsiNames;
@@ -113,8 +120,30 @@ export const generate = async () => {
           }),
           name + "Key"
         ) + "\n";
+      tableKeys.push(name + "Key");
+      tableUpdateTypes[name] = {
+        full: `${name}Key`,
+      };
+      zodTypes += `export const ${name}KeyZod = _${name}.keyZodObject;\n`;
     }
   }
+  tableTypes += `export type ZodormKeys = {
+${tableKeys.map((key) => `  ${key}: ${key},`).join("\n")}
+}
+`;
+  tableTypes += `export const ZodormUpdateZods = {
+${Object.entries(tableUpdateTypes)
+  .map(
+    ([key, value]) =>
+      `  ${key}: {
+    key: ZodTypes.${value.full}Zod,
+    full: ZodTypes.${key}Zod
+  },`
+  )
+  .join("\n")}
+}
+`;
+
   const typeObjectsFile = fs.readFileSync(
     executionPath + "/zodorm/definitions.ts",
     "utf8"
