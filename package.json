@@ -41,7 +41,6 @@
     "dist"
   ],
   "dependencies": {
-    "@ryancircelli/zodorm": "file:",
     "chalk": "4.1.2",
     "chokidar": "^3.6.0",
     "commander": "^12.1.0",
